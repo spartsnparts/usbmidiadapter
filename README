@@ -1,0 +1,10 @@
+To build this firmware, copy the entire directory into the Projects subfolder
+in you LUFA build directory. This firmware was written for and built against
+version 120730 of the LUFA library.
+
+The USB processing portion of the code should be fairly universal. The portion
+of the code responsible for handling serial communication between the adapter
+and a controller is specific to the ATMega8/16u2 line of microcontrollers. It
+should be fairly easy to adapt for different chips however, simply consult
+the datasheet for whatever chip you want to use and substitute the appropriate
+registers.
