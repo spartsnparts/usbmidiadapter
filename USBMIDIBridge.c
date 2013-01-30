@@ -28,16 +28,10 @@
   this software.
 */
 
-/*
- * USBMIDIBridge.c
- * Written by Justin Walbeck, 2013
- *
- * Firmware for a USB to MIDI adapter dongle. Supports bi-directional
- * communication between a host computer and a hardware controller.
- * Communication is handled over a fixed 31250 baud serial bus.
- */
-
 /** \file
+ *
+ *  USBMIDIBridge.c
+ *  Written by Justin Walbeck, 2013
  *
  *  Firmware for a USB to MIDI adapter dongle. Supports bi-directional
  *  communication between a host computer and a hardware controller.
@@ -69,10 +63,15 @@ USB_ClassInfo_MIDI_Device_t Keyboard_MIDI_Interface =
 					},
 			},
 	};
-    
+
+/** Storage space for a MIDI packet received from the host computer */
 MIDI_EventPacket_t MIDIpacket;
+/** Storage space for a MIDI packet being constructed to send to the host */
 MIDI_EventPacket_t MIDIpacket_out;
 
+/**
+ * Initialization routine for the software and hardware side of MIDI comm.
+ */
 void configure_MIDI() {
   MIDIpacket.Event = 0;
   MIDIpacket.Data1 = 0;
@@ -82,14 +81,28 @@ void configure_MIDI() {
   MIDIpacket_out.Data1 = 0;
   MIDIpacket_out.Data2 = 0;
   MIDIpacket_out.Data3 = 0;
+  
+  Serial_init();
 }
 
+/**
+ * The current command being processed. Used by \ref handle_MIDI_in for
+ * directing program flow.
+ */
 uint8_t current_cmd = 0;
+/**
+ * The number of data bytes received from the controller since the last
+ * message was sent to the host.
+ */
 uint8_t data_ct = 0;
+/**
+ * The number of data bytes that should be transmitted to the host, based
+ * on \ref current_cmd.
+ */
 uint8_t packet_size = 0;
 
+/** LUT for mapping \ref current_cmd to \ref packet_size. */
 const uint8_t MIDI_PACKET_SIZE[15] = {0,0,0,0,0,0,0,0,2,2,2,2,1,1,2};
-void handle_MIDI_in(uint8_t b);
 
 /** Main program entry point. This routine contains the overall program flow, including initial
  *  setup of all components and the main program loop.
@@ -269,7 +282,6 @@ void SetupHardware(void)
 
   /* Hardware Initialization */
   USB_Init();
-  Serial_init();
 }
 
 /** Event handler for the library USB Connection event. */

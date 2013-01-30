@@ -36,8 +36,6 @@
  *  specifying the compile time constants supplied through a 
  *  makefile or build system.
  *
- *  For information on what each token does, refer to the 
- *  \ref Sec_Options section of the application documentation.
  */
 
 #ifndef _APP_CONFIG_H_

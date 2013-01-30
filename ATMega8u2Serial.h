@@ -1,4 +1,4 @@
-/**
+/** \file
  * ATMega8u2Serial.h
  * Written by Justin Walbeck
  * Copyright (c) 2013

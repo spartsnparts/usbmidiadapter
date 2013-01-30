@@ -1,4 +1,4 @@
-/**
+/** \file
  * ATMega8u2Serial.c
  * Written by Justin Walbeck
  * Copyright (c) 2013
@@ -8,17 +8,29 @@
 
 #include "ATMega8u2Serial.h"
 
-//Define a set of rudimentary ring buffers. Set RING_BUFFER_SIZE as
-//large as possible for the desired microcontroller to minimize dropped
-//packets.
+/**
+ * Define a set of rudimentary ring buffers. Set RING_BUFFER_SIZE as
+ * large as possible for the desired microcontroller to minimize dropped
+ * packets.
+ */
 #define RING_BUFFER_SIZE 127
+/** Current location of the write point for the transmit buffer*/
 volatile int8_t write_ptr_tx;
+/** Current location of the read point for the transmit buffer*/
 volatile int8_t read_ptr_tx;
+/** SRAM storage space for outgoing character data */
 volatile uint8_t tx_ring_buffer[RING_BUFFER_SIZE];
+/** Current location of the write point for the receive buffer*/
 volatile int8_t write_ptr_rx;
+/** Current location of the read point for the receive buffer*/
 volatile int8_t read_ptr_rx;
+/** SRAM storage space for incoming character data */
 volatile uint8_t rx_ring_buffer[RING_BUFFER_SIZE];
 
+/**
+ * Initialize the on-chip hardware USART. Configures both lines for
+ * 31250 baud communication, the standard comm rate for MIDI devices.
+ */
 void Serial_init() {
   UCSR1B |= (1 << RXEN1) | (1 << TXEN1); //Activate both directions
   UCSR1B |= (1 << RXCIE1);
@@ -31,7 +43,11 @@ void Serial_init() {
   write_ptr_rx = read_ptr_rx = 0;
 }
 
-//Non-blocking character retrieval routine.
+/**
+ * Checks for a character being received from the peripheral controller.
+ * The function is non-blocking, meaning if no character is waiting it
+ * returns immediately.
+ */
 uint8_t Serial_getChar(uint8_t* c) {
   if (read_ptr_rx == write_ptr_rx)
     return 0;
@@ -41,13 +57,20 @@ uint8_t Serial_getChar(uint8_t* c) {
   return 1;
 }
 
-//Interrupt-driven character transmission routine.
+/**
+ * Queue a character to be transmitted to the controller from a host
+ * computer.
+ */
 inline void Serial_sendChar(uint8_t c) {
   tx_ring_buffer[write_ptr_tx++] = c;
   //Let the hardware UART know we have something for it to send.
   UCSR1B |= (1 << UDRIE1);
 }
 
+/**
+ * Interrupt routine for non-blocking character transmission. Called when
+ * the hardware USART detects an empty UDR register.
+ */
 ISR(USART1_UDRE_vect)
 {
   if (write_ptr_tx != read_ptr_tx)
@@ -61,6 +84,7 @@ ISR(USART1_UDRE_vect)
     read_ptr_tx = 0;
 }
 
+/** Interrupt routine for non-blocking character reception. */
 ISR(USART1_RX_vect)
 {
   rx_ring_buffer[write_ptr_rx++] = UDR1;

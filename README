@@ -8,3 +8,6 @@ and a controller is specific to the ATMega8/16u2 line of microcontrollers. It
 should be fairly easy to adapt for different chips however, simply consult
 the datasheet for whatever chip you want to use and substitute the appropriate
 registers.
+
+This project, and any code contained within it, is licensed under the MIT
+License.
