@@ -1,0 +1,56 @@
+/** \file
+ *
+ *  This file contains special DoxyGen information for the generation of the main page and other special
+ *  documentation pages. It is not a project source file.
+ */
+
+/** \mainpage USB-MIDI Adapter Project
+ *
+ *  \section Sec_Compat Project Compatibility:
+ *
+ *  The following list indicates what microcontrollers are compatible with this project.
+ *
+ *  \li Series 7 USB AVRs (AT90USBxxx7)
+ *  \li Series 6 USB AVRs (AT90USBxxx6)
+ *
+ *  \section Sec_Info USB Information:
+ *
+ *  The following table gives a rundown of the USB utilization of this project.
+ *
+ *  <table>
+ *   <tr>
+ *    <td><b>USB Mode:</b></td>
+ *    <td>Device</td>
+ *   </tr>
+ *   <tr>
+ *    <td><b>USB Class:</b></td>
+ *    <td>Audio Class</td>
+ *   </tr>
+ *   <tr>
+ *    <td><b>USB Subclass:</b></td>
+ *    <td>Standard Audio Device</td>
+ *   </tr>
+ *   <tr>
+ *    <td><b>Relevant Standards:</b></td>
+ *    <td>USBIF Audio Class Specification \n
+ *        USB-MIDI Audio Class Extension Specification \n
+ *        General MIDI Specification</td>
+ *   </tr>
+ *   <tr>
+ *    <td><b>Supported USB Speeds:</b></td>
+ *    <td>Full Speed Mode</td>
+ *   </tr>
+ *  </table>
+ *
+ *  \section Sec_Description Project Description:
+ *
+ *  USB-MIDI Adapter Peripheral Project. This project implements a bi-directional
+ *  link between a host computer and a peripheral MIDI controller over USB. The
+ *  project is intended to replace a commercial USB-MIDI adapter and provide direct
+ *  communication via two Serial USART ports, minimizing the amount of required
+ *  external hardware. A target hardware board should break out both of these pins
+ *  as well as power and ground lines, allowing for a controller to connect to a
+ *  computer using only one USB cable.
+ *
+ */
+
